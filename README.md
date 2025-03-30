@@ -1,18 +1,24 @@
 ## Getting Started
 
-First, run the development server:
+> [!NOTE]  
+> We are using **Next 15** with **React 19**, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Clone the repo:
+
+```
+git clone https://github.com/Kiranism/next-shadcn-dashboard-starter.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `pnpm install` ( we have legacy-peer-deps=true added in the .npmrc)
+- Create a `.env.local` file by copying the example environment file:
+  `cp env.example.txt .env.local`
+- Add the required environment variables to the `.env.local` file.
+- `pnpm run dev`
+
+You should now be able to access the application at http://localhost:3000.
+
+> [!WARNING]
+> After cloning or forking the repository, be cautious when pulling or syncing with the latest changes, as this may result in breaking conflicts.
 
 ## Features
 
