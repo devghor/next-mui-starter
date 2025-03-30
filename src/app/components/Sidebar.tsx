@@ -11,6 +11,8 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  styled,
+  Toolbar
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -21,7 +23,7 @@ import {
   Person as PersonIcon,
   Group as GroupIcon,
 } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 
 interface SidebarProps {
@@ -30,9 +32,33 @@ interface SidebarProps {
 }
 
 const drawerWidth = 240;
+const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  margin: '4px 8px',
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '&.Mui-selected': {
+    backgroundColor: `${theme.palette.primary.main}20`,
+    '&:hover': {
+      backgroundColor: `${theme.palette.primary.main}30`,
+    },
+  },
+}));
+
+const NestedListItemButton = styled(ListItemButton)(({ theme }) => ({
+  paddingLeft: theme.spacing(4),
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '&.Mui-selected': {
+    backgroundColor: `${theme.palette.primary.main}20`,
+  },
+}));
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -85,55 +111,69 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          backgroundImage: `linear-gradient(195deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+          color: theme.palette.primary.contrastText,
+          borderRight: 'none',
+          borderColor: theme.palette.divider,
         },
       }}
     >
-      <Box sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        p: 2,
-        borderBottom: '1px solid',
-        borderColor: 'divider'
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        borderBottom: `1px solid ${theme.palette.divider}`
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Image
-            src="/dummy-logo.svg"
-            alt="Dashboard Logo"
-            width={32}
-            height={32}
-            priority
-          />
-          <Typography variant="h6" noWrap>
-            Admin Panel
-          </Typography>
-        </Box>
+        <Toolbar>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Image
+              src="/dummy-logo.svg"
+              alt="Dashboard Logo"
+              width={40}
+              height={40}
+              priority
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
+            <Typography variant="h6" noWrap sx={{ fontWeight: 600, color: 'inherit' }}>
+              Admin Panel
+            </Typography>
+          </Box>
+        </Toolbar>
       </Box>
       <List>
         {menuItems.map((item) => (
           <React.Fragment key={item.text}>
             <ListItem disablePadding>
-              <ListItemButton
+              <StyledListItemButton
                 onClick={() => item.subItems ? handleItemClick(item.text) : handleNavigation(item.path)}
+                selected={item.path === pathname}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
+                <ListItemIcon sx={{ color: 'inherit', minWidth: '40px' }}>
+                  {React.cloneElement(item.icon, { sx: { fontSize: '1.25rem' } })}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                />
                 {item.subItems && (
                   expandedItems.includes(item.text) ? <ExpandLess /> : <ExpandMore />
                 )}
-              </ListItemButton>
+              </StyledListItemButton>
             </ListItem>
             {item.subItems && (
               <Collapse in={expandedItems.includes(item.text)} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   {item.subItems.map((subItem) => (
                     <ListItem key={subItem.text} disablePadding>
-                      <ListItemButton
-                        sx={{ pl: 4 }}
+                      <NestedListItemButton
                         onClick={() => handleNavigation(subItem.path)}
+                        selected={subItem.path === pathname}
                       >
-                        <ListItemIcon>{subItem.icon}</ListItemIcon>
-                        <ListItemText primary={subItem.text} />
-                      </ListItemButton>
+                        <ListItemIcon sx={{ color: 'inherit', minWidth: '40px' }}>
+                          {React.cloneElement(subItem.icon, { sx: { fontSize: '1rem' } })}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={subItem.text}
+                        />
+                      </NestedListItemButton>
                     </ListItem>
                   ))}
                 </List>
@@ -144,4 +184,4 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       </List>
     </Drawer>
   );
-} 
+}
