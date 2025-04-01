@@ -12,7 +12,7 @@ import {
   Link,
 } from "@mui/material";
 import { NavigateNext as NavigateNextIcon } from "@mui/icons-material";
-import { lightTheme, darkTheme } from "../theme";
+import { lightTheme, darkTheme } from "@/config/theme";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { usePathname } from "next/navigation";

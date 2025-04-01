@@ -1,5 +1,5 @@
-import UserList from '../components/UserList';
-import Layout from '../components/Layout';
+import Layout from '@/components/layout';
+import UserList from '@/views/user/UserList';
 
 export default function UsersPage() {
   return (
@@ -7,4 +7,4 @@ export default function UsersPage() {
       <UserList />
     </Layout>
   );
-} 
+}

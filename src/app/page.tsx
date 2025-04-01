@@ -1,5 +1,5 @@
-import Layout from './components/Layout';
-import Dashboard from './components/Dashboard';
+import Layout from '@/components/layout';
+import Dashboard from '@/views/dashboard/Dashboard';
 
 export default function Home() {
   return (
