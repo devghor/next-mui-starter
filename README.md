@@ -21,9 +21,8 @@ You should now be able to access the application at http://localhost:3000.
 
 - Modern admin dashboard interface
 - Responsive layout with sidebar navigation
-- User management table with search
 - Ready-to-use components (Breadcrumb, Dashboard, Navbar, etc.)
 - Pre-configured theme system
-- Optimized font loading with next/font
+- React pro sidebar added
 
 ![Admin Dashboard Screenshot](docs/Screenshot.png)
