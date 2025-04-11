@@ -25,4 +25,4 @@ You should now be able to access the application at http://localhost:3000.
 - Pre-configured theme system
 - React pro sidebar added
 
-![Admin Dashboard Screenshot](docs/Screenshot.png)
+![Admin Dashboard Screenshot](docs/demo1.png)
