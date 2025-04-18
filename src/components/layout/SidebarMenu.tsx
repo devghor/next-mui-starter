@@ -192,9 +192,7 @@ const SidebarMenu = () => {
       style={{ width: '240px' }}
     >
       {/* Header */}
-      <Toolbar
-        sx={{ px: 3, py: 2.5, borderBottom: `1px solid ${colors.border}` }}
-      >
+      <Toolbar sx={{ px: 3, borderBottom: `1px solid ${colors.border}` }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box
             sx={{
@@ -210,10 +208,10 @@ const SidebarMenu = () => {
               fontSize: 18
             }}
           >
-            V
+            AC
           </Box>
           <Typography variant='h6' fontWeight={700}>
-            Vuexy
+            Admin Console
           </Typography>
         </Box>
       </Toolbar>
