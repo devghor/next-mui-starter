@@ -1,200 +1,166 @@
-import { createTheme, alpha } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#2563eb', // Trustworthy blue (banking standard)
-      light: '#3b82f6',
-      dark: '#1d4ed8',
-      contrastText: '#ffffff'
+      main: '#7367F0',
+      light: '#9E95F5',
+      dark: '#5549D1',
+      contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#059669', // Growth green (financial)
-      light: '#10b981',
-      dark: '#047857',
-      contrastText: '#ffffff'
+      main: '#FFC107',
+      light: '#FFD54F',
+      dark: '#FFA000',
+      contrastText: '#2C2C2C'
     },
     success: {
-      main: '#10b981', // Transaction success
-      contrastText: '#ffffff'
+      main: '#28C76F',
+      contrastText: '#FFFFFF'
     },
     warning: {
-      main: '#f59e0b', // Amber for warnings
-      contrastText: '#ffffff'
+      main: '#FF9F43',
+      contrastText: '#FFFFFF'
     },
     error: {
-      main: '#dc2626', // Red for errors
-      contrastText: '#ffffff'
+      main: '#EA5455',
+      contrastText: '#FFFFFF'
     },
     info: {
-      main: '#2563eb', // Same as primary for consistency
-      contrastText: '#ffffff'
+      main: '#00CFE8',
+      contrastText: '#FFFFFF'
     },
     background: {
-      default: '#f8fafc', // Cool gray background
-      paper: '#ffffff' // Pure white cards
+      default: '#F8F7FA',
+      paper: '#FFFFFF'
     },
     text: {
-      primary: '#1e293b', // Navy for text
-      secondary: '#64748b',
-      disabled: '#94a3b8'
+      primary: '#6E6B7B',
+      secondary: '#B9B9C3',
+      disabled: '#D7D7D7'
     },
-    divider: '#e2e8f0'
+    divider: '#EBE9F1'
   },
   components: {
-    // App Bar - Banking Header
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#ffffff',
-          color: '#1e293b',
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-          borderBottom: '1px solid #e2e8f0'
+          backgroundColor: '#FFFFFF',
+          color: '#6E6B7B',
+          boxShadow: '0 4px 24px 0 rgba(34, 41, 47, 0.1)',
+          borderBottom: '1px solid #EBE9F1'
         }
       }
     },
-
-    // Tables - Financial Data
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '6px',
+          textTransform: 'none',
+          fontWeight: 500,
+          padding: '8px 24px',
+          letterSpacing: '0.4px'
+        },
+        contained: {
+          boxShadow: '0 4px 18px -4px rgba(115, 103, 240, 0.4)',
+          '&:hover': {
+            boxShadow: '0 6px 22px -4px rgba(115, 103, 240, 0.4)'
+          }
+        },
+        outlined: {
+          borderWidth: '2px',
+          '&:hover': {
+            borderWidth: '2px'
+          }
+        }
+      }
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: '10px',
+          boxShadow: '0 4px 24px 0 rgba(34, 41, 47, 0.1)',
+          border: '1px solid rgba(34, 41, 47, 0.05)'
+        }
+      }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            borderRadius: '6px',
+            '& fieldset': {
+              borderColor: '#EBE9F1'
+            },
+            '&:hover fieldset': {
+              borderColor: '#7367F0'
+            },
+            '&.Mui-focused fieldset': {
+              borderWidth: '2px'
+            }
+          }
+        }
+      }
+    },
     MuiTable: {
       styleOverrides: {
         root: {
-          borderCollapse: 'separate',
-          borderSpacing: 0
+          borderCollapse: 'collapse'
         }
       }
     },
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderBottom: '1px solid #e2e8f0',
-          padding: '14px 16px',
           fontSize: '0.875rem',
-          '&:first-of-type': {
-            borderLeft: '1px solid #e2e8f0',
-            paddingLeft: '24px'
-          },
-          '&:last-of-type': {
-            borderRight: '1px solid #e2e8f0',
-            paddingRight: '24px'
-          }
+          border: '1px solid #EBE9F1',
+          padding: '0.75rem'
         },
         head: {
-          backgroundColor: '#f1f5f9',
           fontWeight: 600,
-          color: '#1e293b',
-          borderTop: '1px solid #e2e8f0'
+          backgroundColor: '#F8F7FA',
+          color: '#5E5873',
+          borderBottom: '2px solid #EBE9F1'
         },
         body: {
-          '&.credit': {
-            color: '#059669',
-            fontWeight: 500
-          },
-          '&.debit': {
-            color: '#dc2626',
-            fontWeight: 500
-          }
-        }
-      }
-    },
-    MuiTableRow: {
-      styleOverrides: {
-        root: {
-          '&:last-child td': {
-            borderBottom: '1px solid #e2e8f0'
-          },
-          '&:hover': {
-            backgroundColor: '#f8fafc'
-          }
-        }
-      }
-    },
-    MuiTableContainer: {
-      styleOverrides: {
-        root: {
-          borderRadius: '12px',
-          border: '1px solid #e2e8f0',
-          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)'
-        }
-      }
-    },
-
-    // Buttons - Financial CTAs
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: '8px',
-          textTransform: 'none',
-          fontWeight: 500,
-          letterSpacing: '0.025em',
-          padding: '8px 16px'
-        },
-        contained: {
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-          }
-        },
-        containedPrimary: {
-          background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)'
-        },
-        containedSecondary: {
-          background: 'linear-gradient(135deg, #059669 0%, #047857 100%)'
-        }
-      }
-    },
-
-    // Cards - Account Overview
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: '12px',
-          border: '1px solid #e2e8f0',
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
-          overflow: 'visible'
-        }
-      }
-    },
-
-    // Inputs - Transaction Forms
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          '& .MuiOutlinedInput-root': {
-            borderRadius: '8px',
-            '& fieldset': {
-              borderColor: '#cbd5e1'
-            },
-            '&:hover fieldset': {
-              borderColor: '#94a3b8'
-            }
-          }
+          backgroundColor: '#FFFFFF'
         }
       }
     }
   },
   typography: {
-    fontFamily: '"Inter", "Helvetica", Arial, sans-serif',
+    fontFamily: [
+      'Public Sans',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif'
+    ].join(','),
     h1: {
-      fontSize: '1.5rem',
+      fontSize: '2rem',
       fontWeight: 600,
-      color: '#1e293b'
+      lineHeight: 1.25
     },
     h2: {
-      fontSize: '1.25rem',
+      fontSize: '1.75rem',
       fontWeight: 600,
-      color: '#1e293b'
+      lineHeight: 1.3
     },
     body1: {
-      fontSize: '0.875rem',
-      color: '#64748b'
+      fontSize: '0.9375rem',
+      lineHeight: 1.5
     },
     button: {
+      fontSize: '0.9375rem',
       fontWeight: 500
     }
   },
   shape: {
-    borderRadius: 8
+    borderRadius: 6
   }
 });
 
@@ -202,78 +168,103 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#3b82f6',
-      light: '#60a5fa',
-      dark: '#2563eb',
-      contrastText: '#ffffff'
+      main: '#9E95F5',
+      light: '#B9B2F8',
+      dark: '#7367F0',
+      contrastText: '#2C2C2C'
     },
     secondary: {
-      main: '#10b981',
-      light: '#34d399',
-      dark: '#059669',
-      contrastText: '#ffffff'
+      main: '#FFD54F',
+      light: '#FFE082',
+      dark: '#FFCA28',
+      contrastText: '#2C2C2C'
     },
     background: {
-      default: '#0f172a',
-      paper: '#1e293b'
+      default: '#2C2C2C',
+      paper: '#3B3B3B'
     },
     text: {
-      primary: '#f8fafc',
-      secondary: '#94a3b8',
-      disabled: '#64748b'
+      primary: '#CFCFCF',
+      secondary: '#A8A8A8',
+      disabled: '#757575'
     },
-    divider: '#334155'
+    divider: 'rgba(255, 255, 255, 0.12)'
   },
   components: {
-    // Dark mode overrides
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#1e293b',
-          color: '#f8fafc',
-          borderBottom: '1px solid #334155'
-        }
-      }
-    },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          borderBottom: '1px solid #334155',
-          '&:first-of-type': {
-            borderLeft: '1px solid #334155'
-          },
-          '&:last-of-type': {
-            borderRight: '1px solid #334155'
-          }
-        },
-        head: {
-          backgroundColor: '#1e293b',
-          color: '#f8fafc'
-        },
-        body: {
-          '&.credit': {
-            color: '#34d399'
-          },
-          '&.debit': {
-            color: '#f87171'
-          }
-        }
-      }
-    },
-    MuiTableContainer: {
-      styleOverrides: {
-        root: {
-          border: '1px solid #334155'
+          backgroundColor: '#3B3B3B',
+          boxShadow: '0 4px 24px 0 rgba(0, 0, 0, 0.2)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.12)'
         }
       }
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          border: '1px solid #334155'
+          backgroundColor: '#3B3B3B',
+          border: '1px solid rgba(255, 255, 255, 0.12)'
+        }
+      }
+    },
+    MuiTable: {
+      styleOverrides: {
+        root: {
+          borderCollapse: 'collapse'
+        }
+      }
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontSize: '0.875rem',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          padding: '0.75rem'
+        },
+        head: {
+          backgroundColor: '#2C2C2C',
+          fontWeight: 600,
+          color: '#CFCFCF',
+          borderBottom: '2px solid rgba(255, 255, 255, 0.12)'
+        },
+        body: {
+          backgroundColor: '#3B3B3B'
         }
       }
     }
+  },
+  typography: {
+    fontFamily: [
+      'Public Sans',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif'
+    ].join(','),
+    h1: {
+      fontSize: '2rem',
+      fontWeight: 600,
+      lineHeight: 1.25
+    },
+    h2: {
+      fontSize: '1.75rem',
+      fontWeight: 600,
+      lineHeight: 1.3
+    },
+    body1: {
+      fontSize: '0.9375rem',
+      lineHeight: 1.5
+    },
+    button: {
+      fontSize: '0.9375rem',
+      fontWeight: 500
+    }
+  },
+  shape: {
+    borderRadius: 6
   }
-  // Other dark theme configurations...
 });
