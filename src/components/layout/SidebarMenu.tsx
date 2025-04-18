@@ -1,301 +1,247 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Typography, useTheme, alpha, Box, Toolbar } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import GroupIcon from '@mui/icons-material/Group';
-import PeopleIcon from '@mui/icons-material/People';
-import SecurityIcon from '@mui/icons-material/Security';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
-const menuItems = [
-  {
-    label: 'Dashboard',
-    path: '/',
-    icon: <DashboardIcon />,
-    exact: true
-  },
-  {
-    label: 'User Access',
-    icon: <SecurityIcon />,
-    children: [
-      {
-        label: 'User Management',
-        path: '/users',
-        icon: <PeopleIcon />,
-        description: 'Manage system users'
-      },
-      {
-        label: 'Group Settings',
-        path: '/groups',
-        icon: <GroupIcon />,
-        description: 'Configure access groups'
-      }
-    ]
-  }
-];
+import { Box, Typography, useTheme, alpha, Chip, Toolbar } from '@mui/material';
+import {
+  Dashboard as DashboardIcon,
+  People as UserIcon,
+  Lock as RoleIcon,
+  Assignment as PermissionIcon,
+  ExpandMore,
+  ChevronRight,
+  Apps as AppsIcon
+} from '@mui/icons-material';
 
 const SidebarMenu = () => {
   const router = useRouter();
   const pathname = usePathname();
   const theme = useTheme();
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  // Premium color palette with smooth transitions
+  const isActive = (path: string) => pathname === path;
+
+  const hasActiveChild = (children: any[]): boolean => {
+    return children.some((child) =>
+      child.path
+        ? isActive(child.path)
+        : child.children
+          ? hasActiveChild(child.children)
+          : false
+    );
+  };
+
   const colors = {
-    background: theme.palette.mode === 'dark' ? '#181824' : '#F9FBFF',
-    text: theme.palette.mode === 'dark' ? '#E3E8F4' : '#4A5568',
-    activeBackground: alpha(
-      theme.palette.primary.main,
-      theme.palette.mode === 'dark' ? 0.24 : 0.12
-    ),
-    activeText: theme.palette.primary.main,
-    hoverBackground: alpha(
-      theme.palette.primary.main,
-      theme.palette.mode === 'dark' ? 0.16 : 0.08
-    ),
-    divider: alpha(
-      theme.palette.divider,
-      theme.palette.mode === 'dark' ? 0.08 : 0.12
-    ),
-    icon: alpha(theme.palette.primary.main, 0.9),
-    submenuBackground: theme.palette.mode === 'dark' ? '#141420' : '#F0F4F8',
-    highlight: theme.palette.mode === 'dark' ? '#2D3748' : '#EDF2F7'
+    primary: theme.palette.primary.main,
+    bg: theme.palette.background.default,
+    activeBg:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.primary.main, 0.16) // Use primary color with opacity for dark
+        : theme.palette.primary.main,
+    activeText:
+      theme.palette.mode === 'dark' ? theme.palette.primary.light : '#fff',
+    icon:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.common.white, 0.7)
+        : alpha(theme.palette.text.primary, 0.68),
+    section:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.common.white, 0.5)
+        : alpha(theme.palette.text.primary, 0.45),
+    hoverBg:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.primary.main, 0.08)
+        : alpha(theme.palette.primary.main, 0.08),
+    border:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.common.white, 0.12)
+        : alpha(theme.palette.divider, 0.08),
+    badgeBg:
+      theme.palette.mode === 'dark'
+        ? theme.palette.grey[800]
+        : theme.palette.grey[100],
+    badgeText:
+      theme.palette.mode === 'dark'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800]
   };
 
-  const isActive = (path: string, exact = false) => {
-    return exact ? pathname === path : pathname.startsWith(path);
-  };
+  const menuItems = [
+    {
+      label: 'Dashboards',
+      icon: <DashboardIcon sx={{ fontSize: '1.5rem' }} />,
+      path: '/',
+      badge: '5'
+    },
+    {
+      type: 'section',
+      label: 'APPS & PAGES'
+    },
+    {
+      label: 'User Management',
+      icon: <AppsIcon sx={{ fontSize: '1.5rem' }} />,
+      type: 'submenu',
+      children: [
+        {
+          label: 'Users',
+          icon: <UserIcon sx={{ fontSize: '1.3rem' }} />,
+          path: '/users'
+        },
+        {
+          label: 'Roles',
+          icon: <RoleIcon sx={{ fontSize: '1.3rem' }} />,
+          path: '/roles'
+        },
+        {
+          label: 'Permissions',
+          icon: <PermissionIcon sx={{ fontSize: '1.3rem' }} />,
+          path: '/permissions'
+        }
+      ]
+    }
+  ];
 
-  const isSubmenuActive = (children: { path: string }[]) => {
-    return children.some((child) => isActive(child.path));
+  const renderMenuItems = (items: any[]) => {
+    return items.map((item, index) => {
+      if (item.type === 'section') {
+        return (
+          <Typography
+            key={index}
+            variant='caption'
+            sx={{
+              px: 3,
+              py: 1.5,
+              display: 'block',
+              color: colors.section,
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.8px'
+            }}
+          >
+            {item.label}
+          </Typography>
+        );
+      }
+
+      if (item.type === 'submenu') {
+        return (
+          <SubMenu
+            key={index}
+            label={item.label}
+            icon={item.icon}
+            defaultOpen={hasActiveChild(item.children)}
+            renderExpandIcon={({ open }) =>
+              open ? (
+                <ExpandMore fontSize='small' />
+              ) : (
+                <ChevronRight fontSize='small' />
+              )
+            }
+          >
+            {renderMenuItems(item.children)}
+          </SubMenu>
+        );
+      }
+
+      return (
+        <MenuItem
+          key={index}
+          icon={item.icon}
+          active={isActive(item.path)}
+          onClick={() => item.path && router.push(item.path)}
+          suffix={
+            item.badge && (
+              <Chip
+                label={item.badge}
+                size='small'
+                sx={{
+                  backgroundColor: colors.badgeBg,
+                  color: theme.palette.text.secondary,
+                  fontSize: '0.75rem',
+                  height: 20
+                }}
+              />
+            )
+          }
+          style={{
+            backgroundColor: isActive(item.path)
+              ? colors.activeBg
+              : 'transparent',
+            color: isActive(item.path)
+              ? colors.activeText
+              : theme.palette.text.primary,
+            margin: '2px 8px',
+            borderRadius: '6px'
+          }}
+        >
+          {item.label}
+        </MenuItem>
+      );
+    });
   };
 
   return (
     <Sidebar
-      backgroundColor={colors.background}
+      backgroundColor={colors.bg}
       rootStyles={{
         ['.ps-sidebar-container']: {
-          background: `${colors.background} !important`,
-          boxShadow: `4px 0 24px ${alpha(
-            theme.palette.primary.main,
-            theme.palette.mode === 'dark' ? 0.1 : 0.05
-          )}`,
-          position: 'relative',
-          zIndex: 10
-        },
-        ['.ps-submenu-content']: {
-          backgroundColor: `${colors.submenuBackground} !important`,
-          margin: '6px 0',
-          borderRadius: '8px',
-          boxShadow: `0 2px 8px ${alpha(theme.palette.common.black, 0.05)}`
-        },
-        ['.ps-menu-button']: {
-          color: `${colors.text} !important`,
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important'
-        },
-        ['.ps-menu-icon']: {
-          color: `${colors.icon} !important`,
-          transition: 'transform 0.2s ease !important'
-        },
-        ['.ps-menu-button:hover']: {
-          transform: 'none !important'
+          backgroundColor: `${colors.bg} !important`,
+          borderRight: `1px solid ${colors.border}`,
+          height: '100vh'
         }
       }}
-      style={{
-        height: '100vh',
-        width: '240px',
-        borderRight: `1px solid ${colors.divider}`,
-        transition: 'width 0.3s ease'
-      }}
+      style={{ width: '240px' }}
     >
+      {/* Header */}
       <Toolbar
-        sx={{
-          borderBottom: `1px solid ${colors.divider}`
-        }}
+        sx={{ px: 3, py: 2.5, borderBottom: `1px solid ${colors.border}` }}
       >
-        <Typography
-          variant='h6'
-          sx={{
-            color: colors.activeText,
-            fontWeight: 700,
-            letterSpacing: '0.3px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            fontSize: '1.1rem'
-          }}
-        >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box
             sx={{
-              background: `linear-gradient(135deg, ${alpha(
-                theme.palette.primary.main,
-                0.2
-              )} 0%, ${alpha(theme.palette.primary.main, 0.4)} 100%)`,
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
+              width: 30,
+              height: 30,
+              backgroundColor: colors.primary,
+              borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: `0 2px 8px ${alpha(theme.palette.primary.main, 0.1)}`
+              color: 'white',
+              fontWeight: 800,
+              fontSize: 18
             }}
           >
-            <DashboardIcon fontSize='small' sx={{ color: colors.icon }} />
+            V
           </Box>
-          Admin Console
-        </Typography>
+          <Typography variant='h6' fontWeight={700}>
+            Vuexy
+          </Typography>
+        </Box>
       </Toolbar>
 
       <Menu
         menuItemStyles={{
-          button: ({ active, level }) => ({
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            padding: level > 0 ? '10px 16px' : '12px 20px',
-            borderRadius: '8px',
-            fontWeight: active ? 600 : 500,
-            fontSize: level > 0 ? '0.875rem' : '0.9375rem',
-            margin: level > 0 ? '4px 12px' : '8px 12px',
-            color: active ? colors.activeText : colors.text,
-            backgroundColor: active ? colors.activeBackground : 'transparent',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            position: 'relative',
-            overflow: 'hidden',
-            '&:before': {
-              content: '""',
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              height: '100%',
-              width: '3px',
-              backgroundColor: active ? colors.activeText : 'transparent',
-              transition: 'all 0.3s ease'
-            },
+          button: ({ level, active }) => ({
+            padding: level === 0 ? '8px 16px' : '6px 16px',
+            paddingLeft: level === 0 ? 16 : level === 1 ? 36 : 44,
             '&:hover': {
-              backgroundColor: colors.hoverBackground,
-              color: colors.activeText,
-              '&:before': {
-                backgroundColor: colors.activeText
-              }
+              backgroundColor: active ? colors.activeBg : colors.hoverBg
             },
             '& .MuiSvgIcon-root': {
-              fontSize: level > 0 ? '1.125rem' : '1.25rem',
-              color: active ? colors.activeText : colors.icon
+              color: active ? colors.activeText : colors.icon,
+              marginRight: 12
             }
           }),
           label: {
-            fontSize: 'inherit !important',
-            fontWeight: 'inherit !important',
-            letterSpacing: '0.2px',
-            transition: 'all 0.2s ease'
+            fontSize: '0.9375rem',
+            fontWeight: 500,
+            lineHeight: 1.2
           },
           subMenuContent: {
-            backgroundColor: `${colors.submenuBackground} !important`,
-            padding: '8px 0'
+            backgroundColor: colors.bg
           }
         }}
-        renderExpandIcon={({ open }) =>
-          open ? (
-            <ExpandMoreIcon sx={{ fontSize: '1.1rem !important' }} />
-          ) : (
-            <ChevronRightIcon sx={{ fontSize: '1.1rem !important' }} />
-          )
-        }
       >
-        {menuItems.map((item) =>
-          item.children ? (
-            <SubMenu
-              key={item.label}
-              label={
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    py: '2px'
-                  }}
-                >
-                  {item.icon}
-                  <Typography
-                    variant='body1'
-                    sx={{
-                      fontWeight: isSubmenuActive(item.children) ? 600 : 500,
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    {item.label}
-                  </Typography>
-                </Box>
-              }
-              icon={null}
-              defaultOpen={isSubmenuActive(item.children)}
-              onMouseEnter={() => setHoveredItem(item.label)}
-              onMouseLeave={() => setHoveredItem(null)}
-              style={{
-                margin: '4px 0',
-                position: 'relative'
-              }}
-            >
-              {item.children.map((child) => (
-                <MenuItem
-                  key={child.path}
-                  icon={child.icon}
-                  onClick={() => router.push(child.path)}
-                  active={isActive(child.path)}
-                  onMouseEnter={() => setHoveredItem(child.label)}
-                  onMouseLeave={() => setHoveredItem(null)}
-                >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography
-                      variant='body2'
-                      sx={{
-                        fontWeight: isActive(child.path) ? 600 : 500,
-                        fontSize: '0.875rem'
-                      }}
-                    >
-                      {child.label}
-                    </Typography>
-                    {child.description && (
-                      <Typography
-                        variant='caption'
-                        sx={{
-                          color: alpha(colors.text, 0.7),
-                          fontSize: '0.75rem',
-                          mt: '2px'
-                        }}
-                      >
-                        {child.description}
-                      </Typography>
-                    )}
-                  </Box>
-                </MenuItem>
-              ))}
-            </SubMenu>
-          ) : (
-            <MenuItem
-              key={item.path}
-              icon={item.icon}
-              onClick={() => router.push(item.path)}
-              active={isActive(item.path, item.exact)}
-              onMouseEnter={() => setHoveredItem(item.label)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <Typography
-                variant='body1'
-                sx={{
-                  fontWeight: isActive(item.path, item.exact) ? 600 : 500,
-                  fontSize: '0.9375rem'
-                }}
-              >
-                {item.label}
-              </Typography>
-            </MenuItem>
-          )
-        )}
+        {renderMenuItems(menuItems)}
       </Menu>
     </Sidebar>
   );
